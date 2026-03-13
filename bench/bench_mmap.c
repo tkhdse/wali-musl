@@ -1,24 +1,3 @@
-/*
- * bench/bench_mmap.c
- *
- * Measures the WALI syscall overhead of mmap and munmap across a range of
- * anonymous mapping sizes, and additionally measures end-to-end latency
- * including first-page touching (to capture page-fault cost).
- *
- * Each timing interval is bounded by two clock_gettime(CLOCK_MONOTONIC) calls,
- * which are themselves WALI SYS_clock_gettime imports (~1 host syscall each).
- * Subtract the raw timer overhead (printed at startup) for the purest number.
- *
- * Build:
- *   make -C bench            (uses musl-clang wrapper from installed prefix)
- *   -- or --
- *   clang --target=wasm32-linux-muslwali -mbulk-memory -matomics \
- *         --sysroot=/usr/local/musl -O2 -o bench_mmap.wasm bench_mmap.c
- *
- * Run:
- *   <your-wali-runtime> bench_mmap.wasm
- */
-
  #include <sys/mman.h>
  #include <time.h>
  #include <stdio.h>
