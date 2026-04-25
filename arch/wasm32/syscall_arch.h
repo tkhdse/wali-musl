@@ -47,6 +47,34 @@ long __syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)  _
     __import_name__("SYS_" #name)\
   ));
 
+
+// raw import macro
+// #define WALI_SYSCALL_RAW_DEF(name, ...) \
+//   long __syscall_SYS_##name##_raw(__VA_ARGS__) __attribute ((\
+//     __import_module__("wali"),\
+//     __import_name__("SYS_" #name "_raw")\
+//   ));
+
+
+/* mmap-based syscall imports */
+long __walirt_mmap(void*, unsigned int,int,int,int,long long);
+long __walirt_munmap(void*, unsigned int);
+long __walirt_mremap(void*,unsigned int,unsigned int,int,void*);
+
+#define __syscall_SYS_mmap    __walirt_mmap
+#define __syscall_SYS_munmap  __walirt_munmap
+#define __syscall_SYS_mremap  __walirt_mremap
+
+// raw imports
+// WALI_SYSCALL_RAW_DEF (mmap, void*,unsigned int,int,int,int,long long);
+// WALI_SYSCALL_RAW_DEF (munmap, void*,unsigned int);
+// WALI_SYSCALL_RAW_DEF (mremap, void*,unsigned int,unsigned int,int,void*);
+
+// WALI_SYSCALL_DEF (mmap, void*,unsigned int,int,int,int,long long);
+// WALI_SYSCALL_DEF (munmap, void*,unsigned int);
+// WALI_SYSCALL_DEF (mremap, void*,unsigned int,unsigned int,int,void*);
+
+
 /* WALI Syscall Imports */
 WALI_SYSCALL_DEF (read, int,void*,unsigned int);
 WALI_SYSCALL_DEF (write, int,void*,unsigned int);
@@ -57,9 +85,7 @@ WALI_SYSCALL_DEF (fstat, int,void*);
 WALI_SYSCALL_DEF (lstat, char*,void*);
 WALI_SYSCALL_DEF (poll, void*,unsigned long long,int);
 WALI_SYSCALL_DEF (lseek, int,long long,int);
-WALI_SYSCALL_DEF (mmap, void*,unsigned int,int,int,int,long long);
 WALI_SYSCALL_DEF (mprotect, void*,unsigned int,int);
-WALI_SYSCALL_DEF (munmap, void*,unsigned int);
 WALI_SYSCALL_DEF (brk, void*);
 WALI_SYSCALL_DEF (rt_sigaction, int,void*,void*,unsigned int);
 WALI_SYSCALL_DEF (rt_sigprocmask, int,void*,void*,unsigned int);
@@ -73,7 +99,6 @@ WALI_SYSCALL_DEF (access, char*,int);
 WALI_SYSCALL_DEF (pipe, int*);
 WALI_SYSCALL_DEF (select, int,void*,void*,void*,void*);
 WALI_SYSCALL_DEF (sched_yield, );
-WALI_SYSCALL_DEF (mremap, void*,unsigned int,unsigned int,int,void*);
 WALI_SYSCALL_DEF (msync, void*,unsigned int,int);
 WALI_SYSCALL_DEF (mincore, );
 WALI_SYSCALL_DEF (madvise, void*,unsigned int,int);
